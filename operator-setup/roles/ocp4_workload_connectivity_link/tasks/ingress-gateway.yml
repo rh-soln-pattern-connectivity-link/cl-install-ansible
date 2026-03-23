@@ -16,11 +16,18 @@
 
 - name: Get installation-pull-secrets
   ansible.builtin.set_fact:
-    r_registry_pull_secret: "{{ r_pull_secret.resources[0].data['.dockerconfigjson'] | to_json | b64decode    }}"
+    r_registry_pull_secret: "{{ r_pull_secret.resources[0].data['.dockerconfigjson'] | b64decode | from_json    }}"
+
+- debug: msg="1 r_registry_pull_secret::{{ r_registry_pull_secret}}"    
 
 - name: Get installation-pull-secrets
   ansible.builtin.set_fact:
-    r_registry_pull_secret: "{{ r_registry_pull_secret.auths['registry.redhat.io']['auth'] | b64decode  }}"
+    r_registry_pull_secret: "{{ r_registry_pull_secret.auths['registry.redhat.io']['auth'] | to_json| b64decode  }}"
+
+
+
+- debug: msg="2 r_registry_pull_secret::{{ r_registry_pull_secret}}"    
+
 
 - name: Split auth installation-pull-secrets
   ansible.builtin.set_fact:
